@@ -67,3 +67,33 @@
 	(reverse-h lst nil)
 )
 
+
+(defun counter ()
+;;define i=0. update function. Test function.
+	(do ((i 0 (+ i 1))) ((> i 9) 42)
+		(format t "The current value of i is: ~A~%" i)
+	)
+)
+
+(defun factorial (n)
+	(progn
+		(setf )
+	)
+)
+
+;; Arrays
+
+(make-array 3)
+;> #(NIL NIL NIL)
+;we use setf to store the array in a variable
+
+;; best way to make an array because "my-array" has a pointer to the beginning of the array
+(setf my-array (make-array 3))
+;> #(NIL NIL NIL)
+
+
+(setf (aref my-array 0) 42)
+;> 42
+
+my-array
+;> #(42 NIL NIL)
