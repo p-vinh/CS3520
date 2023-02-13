@@ -4,7 +4,7 @@
 
 (defun flip (lst)
 	(if (or (null lst)
-		 (null (cdr lst)))  ; checks if next element is nil.
+		 (null (cdr lst)))  ; checks if next element is nil. Base Case for odd list
 		 lst
 		 ;; Creates a list with cons. Takes two elements and swaps.
 		 ;; Unwinds when base case is true, therefore it does not need append.
