@@ -83,14 +83,12 @@
 )
 
 (defun product-of-diff (lst)
-	(if (null lst)
-		1 					; returns if list is empty
-		(if (null (cdr lst)) 
-			1				; returns if list only has 1 element
-			;; multiplies the resulting accumulator from diff using the first element.
-			;; recursively calls product-of-diff for the rest of the list.
-			(* (diffs (car lst) 1 (cdr lst)) (product-of-diff (cdr lst)))
-		)
+	(if (or (null lst) ; returns if list is empty
+			(null (cdr lst))) ; returns if list only has 1 element
+		1
+		;; multiplies the resulting accumulator from diff using the first element.
+		;; recursively calls product-of-diff for the rest of the list.
+		(* (diffs (car lst) 1 (cdr lst)) (product-of-diff (cdr lst)))
 	)
 )
 
