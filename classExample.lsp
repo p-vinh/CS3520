@@ -83,17 +83,18 @@
 
 ;; Arrays
 
-(make-array 3)
-;> #(NIL NIL NIL)
-;we use setf to store the array in a variable
+;; (make-array 3)
+;; ;> #(NIL NIL NIL)
+;; ;we use setf to store the array in a variable
 
-;; best way to make an array because "my-array" has a pointer to the beginning of the array
-(setf my-array (make-array 3))
-;> #(NIL NIL NIL)
+;; ;; best way to make an array because "my-array" has a pointer to the beginning of the array
+;; (setf my-array (make-array 3))
+;; ;> #(NIL NIL NIL)
 
 
-(setf (aref my-array 0) 42)
-;> 42
+;; (setf (aref my-array 0) 42)
+;; ;> 42
 
-my-array
-;> #(42 NIL NIL)
+;; my-array
+;; ;> #(42 NIL NIL)
+
