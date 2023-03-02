@@ -94,3 +94,28 @@
 
 ;; Takes a list of integers and returns a 
 ;; dotted list with the least and greatest numbers.
+
+(defun min-max-helper (dlst lst)
+    (if (null lst)
+        dlst
+        (let ((elm (car lst)))
+            (if (< elm (car dlst))
+                (min-max-helper (cons elm (cdr dlst)) (cdr lst))
+                (if (> elm (cdr dlst))
+                    (min-max-helper (cons (car dlst) elm) (cdr lst))
+                    (min-max-helper dlst (cdr lst))
+                )
+            )
+        )
+    )
+)
+
+(defun min-max (lst)
+    (if (null lst)
+        nil
+        (if (null (cdr lst))
+            (cons (car lst) nil)
+            (min-max-helper (cons (car lst) (car (cdr lst))) (nthcdr 2 lst))
+        )
+    )
+)
