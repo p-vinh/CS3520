@@ -94,3 +94,19 @@
 
 ;; Takes a list of integers and returns a 
 ;; dotted list with the least and greatest numbers.
+
+
+
+
+;; Supposing sets are represented as lists, takes a list and computes the Power Set of the set it represents as a list. 
+;; For example, the set {0,1}  would be represented as:
+;; (0 1)
+;; then the output would be: (nil (0) (1) (0 1)).
+
+(defun power-set (set)
+	(if (null set)
+		(list nil)
+		(maplist `append set (list 0))
+	)
+
+)

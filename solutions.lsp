@@ -92,3 +92,69 @@
 	)
 )
 
+
+
+(defun is-member (x s)
+	(if (null s)
+		nil
+		(or (eql x (car s)) (is-member x (cdr s)))
+	)
+)
+
+(defun l-union (s1 s2)
+	(if (null s1)
+		s2
+		(if (null s2)
+			s1
+
+			(let ((x (car s1)))
+				(l-union (cdr s1)
+						(if (not (is-member x s2))
+							(cons x s2)
+							s2
+							)
+				)
+			)
+		)
+	)
+)
+
+;; Supposing sets are represented as lists, takes a list and computes the Power Set of the set it represents as a list. For example, the set {0,1}  would be represented as:
+;; (0 1)
+;; then the output would be: (nil (0) (1) (0 1)).
+;; Tail recursive
+(defun proj-union-helper (x s acc)
+	(if (null s)
+		acc
+		(proj-union-helper x (cdr s) (cons (cons x (car s)) acc))
+	)
+)
+
+(defun proj-union (x s)
+	(proj-union-helper x s nil)
+)
+
+(defun power (lset)
+	(if (null lset)
+		(list nil)
+		(let ((elm (car lset))
+			(step-pow (power (cdr lset))))
+		
+			(l-union (proj-union elm step-pow) step-pow)
+		)
+	)
+)
+
+
+;; Takes an integer i and a list and returns a list that is the result of cycling the input list i times. 
+;; For example, if the inputs are:
+;; ((1 2 3 4 5 6 7) 3)
+;; then the output is: (4 5 6 7 1 2 3).
+
+
+(defun cycle (lst num)
+	(if (= num 0)
+		lst
+		(cycle-h (cons (last lst) (butlast lst)) (- num 1))
+	)
+)
