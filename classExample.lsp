@@ -98,3 +98,13 @@
 ;; my-array
 ;; ;> #(42 NIL NIL)
 
+;; FILES I/O
+
+(defun main ()
+	(progn
+		(setf desc (open "file.txt"))
+		(setf line (read-line desc))
+		(write line)
+		(close desc)
+	)
+)

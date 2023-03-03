@@ -184,6 +184,7 @@
 (defun cycle (lst num)
 	(if (= num 0)
 		lst
-		(cycle-h (cons (last lst) (butlast lst)) (- num 1))
+		;; (cycle-h (cons (last lst) (butlast lst)) (- num 1))
+		(cycle-h (append (cdr lst) (cons (car lst) nil)) (decf num))
 	)
 )
