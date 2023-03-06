@@ -182,9 +182,11 @@
 (defun cycle (lst num)
 	(if (= num 0)
 		lst
-		(cycle (append (last lst) (butlast lst)) (- num 1))
+		;; (cycle-h (cons (last lst) (butlast lst)) (- num 1))
+		(cycle-h (append (cdr lst) (cons (car lst) nil)) (decf num))
 	)
 )
+
 
 ;; Takes a list and returns a list in which every element of the input has 
 ;; been duplicated: (1 2 3) -> (1 1 2 2 3 3).
