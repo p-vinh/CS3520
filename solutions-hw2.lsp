@@ -40,16 +40,14 @@
 		acc
 		(dups-h lst (- num 1) (cons (car lst) acc))
 	)
-
 )
 
 (defun dups (lst num)
 	(if (null lst)
 		lst
-		(if (= num 1)
+		(if (< num 1)
 			lst
-			(dups-h lst num nil)
+			(append (dups-h lst num nil) (dups (cdr lst) num))
 		)
 	)
-
 )
