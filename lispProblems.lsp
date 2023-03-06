@@ -179,11 +179,18 @@
 ;; For example, if the inputs are:
 ;; ((1 2 3 4 5 6 7) 3)
 ;; then the output is: (4 5 6 7 1 2 3).
-
-
 (defun cycle (lst num)
 	(if (= num 0)
 		lst
-		(cycle-h (cons (last lst) (butlast lst)) (- num 1))
+		(cycle (append (last lst) (butlast lst)) (- num 1))
 	)
+)
+
+;; Takes a list and returns a list in which every element of the input has 
+;; been duplicated: (1 2 3) -> (1 1 2 2 3 3).
+(defun dup (lst)
+    (if (null lst)
+        lst
+        (cons (car lst) (cons (car lst) (dup (cdr lst))))
+    )
 )
