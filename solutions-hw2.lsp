@@ -13,6 +13,27 @@
 ;; > (occr '(1 2 1 2 3 4 2 4 1 3))
 ;; ((1 . 3) (2 . 3) (3 . 2) (4 . 2))
 
+;; works with only numbers
+;; may have to use a loops for symbols and numbers
+
+(defun occr-h (lst counter)
+	(if (null lst)
+		nil
+		(let ((sorted (sort lst #'<)))
+			(if (eq (car sorted) (cadr sorted))
+				(occr-h (cdr sorted) (+ counter 1))
+				(cons (cons (car sorted) counter) (occr-h (cdr sorted) 1))
+			)
+		)
+	)
+)
+
+(defun occr (lst)
+	(if (null lst)
+		nil
+		(occr-h lst 1)
+	)
+)
 
 
 ;; Write a function nodups that takes a list and returns a list with
