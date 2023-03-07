@@ -6,19 +6,18 @@
 ;; NIL
 
 (defun palindromep (lst)
- 	(write (cdr (butlast lst)))
-	(if (null lst)
-		T
-		(if (null (cdr lst))
-			T
-			(if (eq (car lst) (last lst))
-				(palindromep (cdr (butlast lst)))	
+	(if (null lst) ; base case: empty list is a palindrome
+		t
+		(if (null (cdr lst)) ; base case: single-element list is a palindrome
+			t
+			(if (eq (car lst) (car (last lst)))
+				(palindromep (butlast (cdr lst)))
 				nil
-			)
+			)	
 		)
 	)
-
 )
+
 
 
 ;; Write a function occr that takes a list and returns a list of dotted pairs (also called an associative list)
