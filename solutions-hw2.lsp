@@ -97,8 +97,16 @@
 ;; > (factors '(6 20 9 18))
 ;; ((2 3) (2 5) (3) (2 3))
 
-(defun factors (lst)
+(defun factors-h (lst acc)
+	
+	z
+)
 
+(defun factors (lst)
+	(if (null lst)
+		lst
+		
+	)
 
 )
 
