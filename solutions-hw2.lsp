@@ -23,10 +23,29 @@
 ;; (a b a c)
 
 
+(defun nodups (lst)
+	;; return lst if it is empty
+	(if (null lst)
+		lst
+		;; return the list if there is only 1 element
+		(if (null (cdr lst))
+			lst
+			;; if the first and second element equal call nodups with cdr list
+			(if (eq (car lst) (cadr lst))
+				;; keeps going through the list until there isn't the same element
+				(nodups (cdr lst))
+				;; adds an item to a list and moves on to the next element
+				(cons (car lst) (nodups (cdr lst)))
+			)
+		)		
+	)
+)
 
 ;; Write a function factorsL that takes a list of numbers and replaces every number with a list of its prime factors:
 ;; > (factors '(6 20 9 18))
 ;; ((2 3) (2 5) (3) (2 3))
+
+
 
 
 
