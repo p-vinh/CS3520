@@ -25,10 +25,20 @@
 
 
 ;; Write a function factorsL that takes a list of numbers and replaces every number with a list of its prime factors:
-;; > (factors '(6 20 9 18))
+;; > (factorsL '(6 20 9 18))
 ;; ((2 3) (2 5) (3) (2 3))
 
+(defun prime (num acc)
 
+)
+
+(defun factorL (lst)
+	(if (null lst)
+		lst
+
+		
+	)
+) 
 
 
 ;; Write a function dups that takes a list and a number and duplicates each element the number of times specified by the number argument:
