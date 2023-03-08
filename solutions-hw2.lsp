@@ -98,17 +98,27 @@
 ;; ((2 3) (2 5) (3) (2 3))
 
 
-(defun factors-h (lst acc)
+(defun prime (num acc)
+	(if (= num 0)
+		0
+		(if (= num 1)
+			1
+			(let ((div (mod num 2))
+				  (maxN (isqrt num)))
+				(if (= div 0)
+					(cons 2)
+				)
+			)
+
+		)
+	)
 	
-	z
+
 )
 
-(defun factors (lst)
-	(if (null lst)
-		lst
-		
-	)
-
+(defun factors-h (lst acc)
+	
+	
 )
 
 (defun factorL (lst)
