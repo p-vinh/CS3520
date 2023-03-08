@@ -95,6 +95,15 @@
 ;; Takes a list of integers and returns a 
 ;; dotted list with the least and greatest numbers.
 
+(defun sort-dotted (dlst)
+    (let ((fst (car dlst))
+          (lt (cdr dlst)))
+        (if (> fst lt)
+            (cons lt fst)
+        )      
+    )
+)
+
 (defun min-max-helper (dlst lst)
     (if (null lst)
         dlst
@@ -115,7 +124,7 @@
         nil
         (if (null (cdr lst))
             (cons (car lst) nil)
-            (min-max-helper (cons (car lst) (car (cdr lst))) (nthcdr 2 lst))
+            (min-max-helper (sort-dotted (cons (car lst) (car (cdr lst)))) (nthcdr 2 lst))
         )
     )
 )
