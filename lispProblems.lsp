@@ -95,6 +95,15 @@
 ;; Takes a list of integers and returns a 
 ;; dotted list with the least and greatest numbers.
 
+(defun sort-dotted (dlst)
+    (let ((fst (car dlst))
+          (lt (cdr dlst)))
+        (if (> fst lt)
+            (cons lt fst)
+        )      
+    )
+)
+
 (defun min-max-helper (dlst lst)
     (if (null lst)
         dlst
@@ -115,7 +124,7 @@
         nil
         (if (null (cdr lst))
             (cons (car lst) nil)
-            (min-max-helper (cons (car lst) (car (cdr lst))) (nthcdr 2 lst))
+            (min-max-helper (sort-dotted (cons (car lst) (car (cdr lst)))) (nthcdr 2 lst))
         )
     )
 )
@@ -179,12 +188,20 @@
 ;; For example, if the inputs are:
 ;; ((1 2 3 4 5 6 7) 3)
 ;; then the output is: (4 5 6 7 1 2 3).
-
-
 (defun cycle (lst num)
 	(if (= num 0)
 		lst
 		;; (cycle-h (cons (last lst) (butlast lst)) (- num 1))
 		(cycle-h (append (cdr lst) (cons (car lst) nil)) (decf num))
 	)
+)
+
+
+;; Takes a list and returns a list in which every element of the input has 
+;; been duplicated: (1 2 3) -> (1 1 2 2 3 3).
+(defun dup (lst)
+    (if (null lst)
+        lst
+        (cons (car lst) (cons (car lst) (dup (cdr lst))))
+    )
 )
