@@ -110,7 +110,7 @@
 	(if (< (isqrt num) i)
 		(cons num acc)
 		(if (= (mod num i) 0)
-			(remove-duplicates (cons i (prime (/ num i) acc 2)))
+			(nodups (cons i (prime (/ num i) acc 2)))
 			(prime num acc (1+ i))
 
 		)
