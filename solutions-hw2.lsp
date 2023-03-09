@@ -6,26 +6,25 @@
 ;; NIL
 
 (defun palindromep (lst)
-	(if (null lst) ; base case: empty list is a palindrome
+	(if (equal (reverse lst) lst)
 		t
-		(if (null (cdr lst)) ; base case: single-element list is a palindrome
-			t
-			(if (equal (car lst) (car (last lst)))
-				(palindromep (butlast (cdr lst)))
-				nil
-			)	
-		)
+		nil
 	)
 )
 
-;; Another solution to palindromep.
+;; Uses butlast and cdr to traverse
 ; (defun palindromep (lst)
-; 	(if (equal lst (reverse lst))
+; 	(if (null lst) ; base case: empty list is a palindrome
 ; 		t
-; 		nil
+; 		(if (null (cdr lst)) ; base case: single-element list is a palindrome
+; 			t
+; 			(if (equal (car lst) (car (last lst)))
+; 				(palindromep (butlast (cdr lst)))
+; 				nil
+; 			)	
+; 		)
 ; 	)
 ; )
-
 
 
 ;; Write a function occr that takes a list and returns a list of dotted pairs (also called an associative list)
@@ -121,11 +120,11 @@
 	)
 )
 
-(defun factorL (lst)
+(defun factorsL (lst)
 	(if (null lst)
 		lst
 		;; Goes through every element in lst and calls prime with it
-		(cons (prime (car lst) nil 2) (factorL (cdr lst)))
+		(cons (prime (car lst) nil 2) (factorsL (cdr lst)))
 	)
 ) 
 
