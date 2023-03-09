@@ -52,7 +52,7 @@
 	(let ((pair (assoc x result)))
 		(if (null pair)
 			;; If pair doesn't exist creates a new dotted list and appends it to results
-			(setf result (append result (list (cons x 1))))
+			(setf result (cons (cons x 1) result))
 
 			;; If pair does exist adds one to the counter and updates it using 'setf'
 			(setf (cdr pair) (+ (cdr pair) 1))
@@ -68,7 +68,7 @@
 			;; Using mapcar to go through each element.
 			(mapcar (lambda (x)
 					(setf result (occr-h x result))) lst)
-			result
+			(reverse result)
 		)
 	)
 )
