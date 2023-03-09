@@ -108,11 +108,11 @@
 
 (defun prime (num acc i)
 	(if (< (isqrt num) i)
-		acc
+		(cons num acc)
 		(if (= (mod num i) 0)
-			(cons i (prime (/ num i) acc 2))
+			(remove-duplicates (cons i (prime (/ num i) acc 2)))
 			(prime num acc (1+ i))
-			
+
 		)
 	)
 )
