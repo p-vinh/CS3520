@@ -10,13 +10,21 @@
 		t
 		(if (null (cdr lst)) ; base case: single-element list is a palindrome
 			t
-			(if (eq (car lst) (car (last lst)))
+			(if (equal (car lst) (car (last lst)))
 				(palindromep (butlast (cdr lst)))
 				nil
 			)	
 		)
 	)
 )
+
+;; Another solution to palindromep
+; (defun palindromep (lst)
+; 	(if (equal lst (reverse lst))
+; 		t
+; 		nil
+; 	)
+; )
 
 
 
@@ -98,34 +106,21 @@
 ;; ((2 3) (2 5) (3) (2 3))
 
 
-(defun prime (num acc)
-	(if (= num 0)
-		0
-		(if (= num 1)
-			1
-			(let ((div (mod num 2))
-				  (maxN (isqrt num)))
-				(if (= div 0)
-					(cons 2)
-				)
-			)
-
+(defun prime (num acc i)
+	(if (< (isqrt num) i)
+		acc
+		(if (= (mod num i) 0)
+			(cons i (prime (/ num i) acc 2))
+			(prime num acc (1+ i))
+			
 		)
 	)
-	
-
-)
-
-(defun factors-h (lst acc)
-	
-	
 )
 
 (defun factorL (lst)
 	(if (null lst)
 		lst
-
-		
+		(cons (prime (car lst) nil 2) (factorL (cdr lst)))
 	)
 ) 
 
