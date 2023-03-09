@@ -18,7 +18,7 @@
 	)
 )
 
-;; Another solution to palindromep
+;; Another solution to palindromep.
 ; (defun palindromep (lst)
 ; 	(if (equal lst (reverse lst))
 ; 		t
@@ -107,12 +107,16 @@
 
 
 (defun prime (num acc i)
+	;; a prime number cannot be greater than the composite
+	;; if it is then it is a prime itself there it will return 'num'
 	(if (< (isqrt num) i)
 		(cons num acc)
+		;; Keeps modding num by i and if it equals 0 then it will add it to acc.
+		;; Will check if (num / i) is a prime or composite, if it is a composite it will recursively call prime until it returns a list of primes.
+		;; Otherwise prime will be called incrementing 1
 		(if (= (mod num i) 0)
-			(nodups (cons i (prime (/ num i) acc 2)))
+			(nodups (cons i (prime (/ num i) acc 2))) ; calls nodups to return duplicate primes.
 			(prime num acc (1+ i))
-
 		)
 	)
 )
@@ -120,6 +124,7 @@
 (defun factorL (lst)
 	(if (null lst)
 		lst
+		;; Goes through every element in lst and calls prime with it
 		(cons (prime (car lst) nil 2) (factorL (cdr lst)))
 	)
 ) 
@@ -132,6 +137,7 @@
 (defun dups-h (lst num acc)
 	(if (= num 0)
 		acc
+		;; Keeps adding the element to acc until num = 0
 		(dups-h lst (- num 1) (cons (car lst) acc))
 	)
 )
@@ -141,6 +147,7 @@
 		lst
 		(if (< num 1)
 			lst
+			;; Appends the duplicated list from the helper and goes to next element
 			(append (dups-h lst num nil) (dups (cdr lst) num))
 		)
 	)
