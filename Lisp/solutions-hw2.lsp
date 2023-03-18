@@ -46,31 +46,50 @@
 ; 	)
 ; )
 
-;; Works with symbols and numbers combined
-(defun occr-h (x result)
-	;; Checks if pair is in the results.
-	(let ((pair (assoc x result)))
-		(if (null pair)
-			;; If pair doesn't exist creates a new dotted list and appends it to results
-			(setf result (cons (cons x 1) result))
+;; ;; Works with symbols and numbers combined
+;; (defun occr-h (x result)
+;; 	;; Checks if pair is in the results.
+;; 	(let ((pair (assoc x result)))
+;; 		(if (null pair)
+;; 			;; If pair doesn't exist creates a new dotted list and appends it to results
+;; 			(setf result (cons (cons x 1) result))
 
-			;; If pair does exist adds one to the counter and updates it using 'setf'
-			(setf (cdr pair) (+ (cdr pair) 1))
+;; 			;; If pair does exist adds one to the counter and updates it using 'setf'
+;; 			(setf (cdr pair) (+ (cdr pair) 1))
+;; 		)
+;; 		result
+;; 	)
+;; )
+
+;; (defun occr (lst)
+;; 	(if (null lst)
+;; 		lst
+;; 		(let ((result '()))
+;; 			;; Using mapcar to go through each element.
+;; 			(mapcar (lambda (x)
+;; 					(setf result (occr-h x result))) lst)
+;; 			(reverse result)
+;; 		)
+;; 	)
+;; )
+
+;; answer
+(defun frst-cntr (x lst cnt)
+	(if (null lst)
+		(cons x cnt)
+		
+		(if (equal x (car lst))
+			(frst-cntr x (cdr lst) (1+ cnt))
+			(frst-cntr x (cdr lst) cnt)
 		)
-		result
 	)
 )
 
 (defun occr (lst)
-	(if (null lst)
-		lst
-		(let ((result '()))
-			;; Using mapcar to go through each element.
-			(mapcar (lambda (x)
-					(setf result (occr-h x result))) lst)
-			(reverse result)
+		(if (null lst)
+			nil
+			(cons (frst-cntr (car lst) lst 0) (occr (remove (car lst) lst))) ; remove all the occurences of the symbol in the list
 		)
-	)
 )
 
 
