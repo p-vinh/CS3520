@@ -4,7 +4,7 @@
 % ?- element_at(X,[a,b,c,d,e],3).
 % X = c
 
-element_at(X, [X | _], 1).
+element_at(X, [X | T], 1).
 element_at(X, [_|T], N) :- N > 1, S is N - 1, element_at(X, T, S).
 
 
