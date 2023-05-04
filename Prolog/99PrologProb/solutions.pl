@@ -42,29 +42,36 @@ LR = [[],[1],[2],[1,2]]. */
 ?- quicksort([4,2,6,1,3],SL).
 SL = [1,2,3,4,6]. */
 
-
-
 % Base Case
 quicksort([H], [H]).
 quicksort([], []).
 
-quicksort([H|T], SL) :- partition_H([H|T], H, L1, L2), quicksort(L1, LR), quicksort(L2, LR2), append(L1, L2, SL). 
+quicksort([H|T], SL) :- partition_H([H|T], H, L1, L2), quicksort(L1, LR), quicksort(L2, LR2), append(LR, [H|LR2], SL). 
 
 
-partition_H([], _, [], []). 
-partition_H([P|T], P, L, [P|G]) :- partition_H(T, P, L, G).
-partition_H([H|T], P, [H|L], G) :- H =< P, partition_H(T, P, L, G).
+partition_H([], _, [], []).
+partition_H([P|T], P, L, G) :- partition_H(T, P, L, G).
+partition_H([H|T], P, [H|L], G) :- H < P, partition_H(T, P, L, G).
 partition_H([H|T], P, L, [H|G]) :- H > P, partition_H(T, P, L, G).
-
-
-list_size([], 0).
-list_size([_|T], S) :- list_size(T, R), S is R + 1.
 
 
 /* Define a relation mergesort(L,SL) which maps a list L to a list SL which is the sorted version of L using the mergesort algorithm. (10 points)
 ?- mergesort([4,2,6,1,3],SL).
 SL = [1,2,3,4,6]. */
 
+mergesort([H], [H]).
+mergesort([], []).
+mergesort([H|T], SL) :- list_size([H|T], Midpoint), MP is ceil(Midpoint / 2), split([H|T], MP, R1, R2),
+                        mergesort(R1, LR1), mergesort(R2, LR2), merge(LR1, LR2, SL).
+
+list_size([], 0).
+list_size([_|T], S) :- list_size(T, R), S is R + 1.
+
+split([], _, [], []).
+split(L, 0, [], L).
+split([H|T], N, R1, R2) :- C is N - 1, split(T, C, R, R2), R1 = [H | R].
+
 /* Determine whether two numbers are amicable: (15 points)
 ?- are_amicable(220,284).
 true. */
+
