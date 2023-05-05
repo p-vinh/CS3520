@@ -22,8 +22,7 @@ is_union([H|T], L2, LR) :-
     is_member(H, L2),
     !,
     is_union(T, L2, LR).
-is_union([H|T], L2, [H|LR]) :-
-    is_union(T, L2, LR).
+is_union([H|T], L2, [H|LR]) :- is_union(T, L2, LR).
 
 /* is_intersect(L1,L2,LR), which is true iff LR is the intersection of L1 and L2. (5 points)
 ?- is_intersect([1,2],[2,3],LR).
@@ -36,6 +35,18 @@ is_intersect([_|T], L2, LR) :- is_intersect(T, L2, LR).
 /* is_power(L,LR), which is true iff LR is the power set of L. (15 points)
 ?- is_power([1,2],LR).
 LR = [[],[1],[2],[1,2]]. */
+
+
+proj_union_helper(_, [], Acc, Acc).
+proj_union_helper(X, [H|T], Acc, R) :-
+    proj_union_helper(X, T, [X,H|Acc], R).
+
+proj_union(X, S, Result) :-
+    proj_union_helper(X, S, [], Result).
+
+is_power([], []).
+is_power([H|T], LR) :- is_power(T, StepPow), proj_union(H, StepPow, ProjUnion), union(StepPow, ProjUnion, LR).
+
 
 
 /* Define a relation quicksort(L,SL) which maps a list L to a list SL which is the sorted version of L using the quicksort algorithm. (10 points)
@@ -62,7 +73,12 @@ SL = [1,2,3,4,6]. */
 mergesort([H], [H]).
 mergesort([], []).
 mergesort([H|T], SL) :- list_size([H|T], Midpoint), MP is ceil(Midpoint / 2), split([H|T], MP, R1, R2),
-                        mergesort(R1, LR1), mergesort(R2, LR2), merge(LR1, LR2, SL).
+                        mergesort(R1, LR1), mergesort(R2, LR2), merge-h(LR1, LR2, SL).
+
+merge-h([], L, L).
+merge-h(L, [], L).
+merge-h([H1|T1], [H2|T2], [H|R]) :- H1 =< H2 -> H = H1, merge-h(T1, [H2|T2], R); 
+                                                H = H2, merge-h([H1|T1], T2, R).
 
 list_size([], 0).
 list_size([_|T], S) :- list_size(T, R), S is R + 1.
@@ -75,3 +91,25 @@ split([H|T], N, R1, R2) :- C is N - 1, split(T, C, R, R2), R1 = [H | R].
 ?- are_amicable(220,284).
 true. */
 
+
+are_amicable(N1, N2) :-
+    divisors(N1, DivisorsA),
+    listsum(DivisorsA, SumA),
+    divisors(N2, DivisorsB),
+    listsum(DivisorsB, SumB),
+    SumA =:= N2,
+    SumB =:= N1.
+
+
+listsum([], 0).
+listsum([H|T], Sum) :- listsum(T, R), Sum is H + R.
+
+divisors(N, D) :-
+    divisors_h(N, 1, D).
+
+divisors_h(N, N, []).
+
+divisors_h(N, H, [H|T]) :-
+    H < N,
+    N mod H =:= 0 -> H1 is H + 1, divisors_h(N, H1, T);
+    H1 is H + 1, divisors_h(N, H1, T).
