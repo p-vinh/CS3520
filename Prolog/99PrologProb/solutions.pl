@@ -57,12 +57,11 @@ SL = [1,2,3,4,6]. */
 quicksort([H], [H]).
 quicksort([], []).
 
-quicksort([H|T], SL) :- partition_H([H|T], H, L1, L2), quicksort(L1, LR), quicksort(L2, LR2), append(LR, [H|LR2], SL). 
+quicksort([H|T], SL) :- partition_H(T, H, L1, L2), quicksort(L1, LR), quicksort(L2, LR2), append(LR, [H|LR2], SL). 
 
 
 partition_H([], _, [], []).
-partition_H([P|T], P, L, G) :- partition_H(T, P, L, G).
-partition_H([H|T], P, [H|L], G) :- H < P, partition_H(T, P, L, G).
+partition_H([H|T], P, [H|L], G) :- H =< P, partition_H(T, P, L, G).
 partition_H([H|T], P, L, [H|G]) :- H > P, partition_H(T, P, L, G).
 
 
@@ -93,10 +92,10 @@ true. */
 
 
 are_amicable(N1, N2) :-
-    divisors(N1, DivisorsA),
-    listsum(DivisorsA, SumA),
-    divisors(N2, DivisorsB),
-    listsum(DivisorsB, SumB),
+    divisors(N1, N1, [], R1),
+    listsum(R1, SumA),
+    divisors(N2, N2, [], R2),
+    listsum(R2, SumB),
     SumA =:= N2,
     SumB =:= N1.
 
@@ -104,12 +103,7 @@ are_amicable(N1, N2) :-
 listsum([], 0).
 listsum([H|T], Sum) :- listsum(T, R), Sum is H + R.
 
-divisors(N, D) :-
-    divisors_h(N, 1, D).
-
-divisors_h(N, N, []).
-
-divisors_h(N, H, [H|T]) :-
-    H < N,
-    N mod H =:= 0 -> H1 is H + 1, divisors_h(N, H1, T);
-    H1 is H + 1, divisors_h(N, H1, T).
+divisors(0, _, L, L).
+divisors(_, 1, L, L).
+divisors(N, X, L, R) :- M is X - 1, N mod M =:= 0 -> append([M], L, C), divisors(N, M, C, R); 
+                                                     M is X - 1, divisors(N, M, L, R).
