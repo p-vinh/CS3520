@@ -108,3 +108,13 @@
 		(close desc)
 	)
 )
+
+(defun our_nth (lst n)
+	(if (null lst)
+		nil
+		(if (zerop n)
+			(car lst)
+			(our_nth (cdr lst) (- n 1))
+		)
+	)
+)
