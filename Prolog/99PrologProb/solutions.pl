@@ -39,13 +39,13 @@ LR = [[],[1],[2],[1,2]]. */
 
 proj_union_helper(_, [], Acc, Acc).
 proj_union_helper(X, [H|T], Acc, R) :-
-    proj_union_helper(X, T, [X,H|Acc], R).
+    proj_union_helper(X, T, [[X|H]|Acc], R).
 
 proj_union(X, S, Result) :-
     proj_union_helper(X, S, [], Result).
 
-is_power([], []).
-is_power([H|T], LR) :- is_power(T, StepPow), proj_union(H, StepPow, ProjUnion), union(StepPow, ProjUnion, LR).
+is_power([], [[]]).
+is_power([H|T], LR) :- is_power(T, StepPow), proj_union(H, StepPow, ProjUnion), is_union(ProjUnion, StepPow, LR).
 
 
 
@@ -95,7 +95,7 @@ are_amicable(N1, N2) :-
     divisors(N1, N1, [], R1),
     listsum(R1, SumA),
     divisors(N2, N2, [], R2),
-    listsum(R2, SumB),
+    listsum(R2, SumB), !,
     SumA =:= N2,
     SumB =:= N1.
 
@@ -105,5 +105,5 @@ listsum([H|T], Sum) :- listsum(T, R), Sum is H + R.
 
 divisors(0, _, L, L).
 divisors(_, 1, L, L).
-divisors(N, X, L, R) :- M is X - 1, N mod M =:= 0 -> append([M], L, C), divisors(N, M, C, R); 
-                                                     M is X - 1, divisors(N, M, L, R).
+divisors(N, X, L, R) :- M is X - 1, N mod M =:= 0 -> append([M], L, C), divisors(N, M, C, R);                               
+                                                      M is X - 1, divisors(N, M, L, R).
