@@ -65,10 +65,10 @@
 
 (defun sumPos-h (lst pos even odd)
 	(if (null lst)
-		(cons even odd)
+		(cons even (cons odd nil))
 		(if (evenp pos)
-			(sumPos (cdr lst) (+ pos 1) (+ even (car lst)) odd)
-			(sumPos (cdr lst) (+ pos 1) even (+ odd (car lst)))
+			(sumPos-h (cdr lst) (+ pos 1) (+ even (car lst)) odd)
+			(sumPos-h (cdr lst) (+ pos 1) even (+ odd (car lst)))
 		)
 	)
 
