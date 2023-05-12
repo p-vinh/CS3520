@@ -15,10 +15,65 @@
 ;; 2. Create a function that computes x^2 without using multiplication by using the
 ;;	  following recursive definition: 0^2 = 0 , n^2 = (n-1)^2 + n + n - 1.
 
+(defun powR-h (n prev acc)
+	(if (= n 0)
+		acc
+		(powR-h (- n 1) n (+ (- (+ prev (+ n n)) 1) acc))
+	)
+)
+
+(defun powR (x)
+	(if (= x 0)
+		0
+		(powR-h x 0 1)	
+	)
+)
 
 
-;; 3. Create a function that takes a list of pairs of integers, and orders the elements of each pair in non-increasing order. For example, the list [(2,1) , (3,2) , (6,1)] will result in the list [(1,2) , (2,3) , (1,6)]. Hint: use dotted lists for the pairs in Lisp, and for Prolog you will have to define a relation pair(X,Y).
-;; 4. Create a function that takes a list of integers and returns a pair consisting of the sum of the numbers in even positions and the sum of the numbers in odd positions. For example, for the list [1,2,3,4] the function should return (4,6).
+
+
+;; 3. Create a function that takes a list of pairs of integers, and orders the elements of each pair in non-increasing order.
+;;	  For example, the list [(2,1) , (3,2) , (6,1)] will result in the list [(1,2) , (2,3) , (1,6)].
+;;	  Hint: use dotted lists for the pairs in Lisp, and for Prolog you will have to define a relation pair(X,Y).
+
+(defun listOrder (lst)
+	(if (null lst)
+		lst
+		(cons (sortP (car lst)) (listOrder (cdr lst)))
+	)
+)
+
+(defun sortP (pair)
+	(let ((frst (car pair))
+		  (secnd (cdr pair)))
+
+		  (if (> frst secnd)
+		  	(cons secnd frst)
+			(cons frst secnd)
+		  )
+	)
+)
+;; 4. Create a function that takes a list of integers and returns a pair consisting of the sum of the numbers in even positions and the sum of the numbers in odd positions.
+;;	  For example, for the list [1,2,3,4] the function should return (4,6).
+
+(defun sumPos (lst)
+	(if (null lst)
+		0
+		(sumPos-h lst 0 0 0)
+	)
+)
+
+(defun sumPos-h (lst pos even odd)
+	(if (null lst)
+		(cons even odd)
+		(if (evenp pos)
+			(sumPos (cdr lst) (+ pos 1) (+ even (car lst)) odd)
+			(sumPos (cdr lst) (+ pos 1) even (+ odd (car lst)))
+		)
+	)
+
+)
+
 ;; 5. Create a function that takes a list of pairs of integers and returns a list with the sum of the elements of every pair. For example, for the list [(1,2) , (3,4) , (5,6)] the function should return [3,7,11].
 ;; 6. Create a function that takes a list of pairs of integers and returns a pair with the sum of the elements in the first position and the sum of the elements in the second position. For example, for the list [(1,2) , (3,4) , (5,6)] the function should return (9,12).
 ;; 7. Polynomials may be represented as lists of integer, where each integer is the coefficient of the corresponding monomial. For example, x^3 + 3x - 7 can be represented as [1,0,3,7]. Create a function that takes a polynomial as a list and evaluates the polynomial at a given point x_0. Hint: use the function from problem (1).
