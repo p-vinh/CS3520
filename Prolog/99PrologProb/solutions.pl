@@ -2,7 +2,7 @@
 is_member(X,L), which is true iff X is a member of L. (5 points)
 ?- is_member(3,[1,2,3]).
 true. */
-
+is_member(_, []) :- !, fail.
 is_member(N, [N|_]).
 is_member(N, [_|T]) :- is_member(N, T).
 
@@ -29,7 +29,7 @@ is_union([H|T], L2, [H|LR]) :- is_union(T, L2, LR).
 LR = [2]. */
 
 is_intersect([], _, []).
-is_intersect([H|T], L2, [H|LR]) :- is_member(H, L2), is_intersect(T, L2, LR).
+is_intersect([H|T], L2, R) :- is_member(H, L2), is_intersect(T, L2, LR), R = [H | LR].
 is_intersect([_|T], L2, LR) :- is_intersect(T, L2, LR).
 
 /* is_power(L,LR), which is true iff LR is the power set of L. (15 points)
@@ -44,8 +44,12 @@ proj_union_helper(X, [H|T], Acc, R) :-
 proj_union(X, S, Result) :-
     proj_union_helper(X, S, [], Result).
 
+proj(_, [], []).
+proj(X, [H|T], R) :- is_union([X], H, R1), proj(X, T, R2), R = [R1 | R2].
+
 is_power([], [[]]).
-is_power([H|T], LR) :- is_power(T, StepPow), proj_union(H, StepPow, ProjUnion), is_union(ProjUnion, StepPow, LR).
+is_power([H|T], LR) :- is_power(T, R1), proj(H, R1, R2), is_union(R1, R2, LR).
+
 
 
 
