@@ -90,6 +90,18 @@
 ;;	  For example, for the list [(1,2) , (3,4) , (5,6)] the function should return (9,12).
 
 
+(defun sumPairPos (lst)
+	(sumPairPos-h lst 0 0)
+)
+
+(defun sumPairPos-h (lst sumF sumS)
+	(if (null lst)
+		(cons sumF (cons sumS nil))
+		(sumPairPos-h (cdr lst) (+ (caar lst) sumF) (+ (cadar lst) sumS))
+	)
+
+)
+
 ;; 7. Polynomials may be represented as lists of integer, where each integer is the coefficient of the corresponding monomial.
 ;;	  For example, x^3 + 3x - 7 can be represented as [1,0,3,7]. Create a function that takes a polynomial as a list and evaluates the polynomial at a given point x_0.
 ;;	  Hint: use the function from problem (1).
@@ -159,7 +171,7 @@
 
 (defun removeDups-h (lst elm acc)
 	(if (equal elm (car lst))
-		(removeDups (cdr lst) elm acc)
-		(removeDups (cdr lst) elm (cons (car lst) acc))
+		(removeDups-h (cdr lst) elm acc)
+		(removeDups-h (cdr lst) elm (cons (car lst) acc))
 	)
 )
