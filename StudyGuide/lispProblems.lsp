@@ -111,6 +111,8 @@
 ;; 8. Create a function that eliminates all duplicate elements from a list.
 ;;	  For example, for the list [a,b,b,a,c,b,c,c,d,a,d] the function should return [a,b,c,d].
 
+
+
 ;; 9. Create a function that packs consecutive duplicate elements of a list into sublists.
 ;;	  For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a] , [b,b] , [a] , [c] , [b] , [c,c] , [d] , [a] , [d]]
 
