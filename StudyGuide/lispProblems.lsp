@@ -1,7 +1,7 @@
 ;; 1. Create a function that computes x^y.
 (defun pow (x y)
 	(if (= y 0)
-		x
+		1
 		(pow-h x y 1)
 	)
 )
@@ -106,16 +106,56 @@
 ;;	  For example, x^3 + 3x - 7 can be represented as [1,0,3,7]. Create a function that takes a polynomial as a list and evaluates the polynomial at a given point x_0.
 ;;	  Hint: use the function from problem (1).
 
+(defun polynomial (lst x)
+	(if (null lst)
+		0
+		(polynomial-h lst x 0 0)
+	)
+)
 
+(defun polynomial-h (lst x sign sum)
+	(if (null lst)
+		sum
+		(if (= (car lst) 0)
+			(polynomial-h (cdr lst) x 0 sum)
+			(let ((var (pow x (- (length lst) 1))))
+				(if (= (mod sign 2) 0)
+					(polynomial-h (cdr lst) x 1 (+ (* (car lst) var) sum))
+					(polynomial-h (cdr lst) x 1 (- sum (* (car lst) var)))
+				)
+			)
+		)
+	)
+)
 
 ;; 8. Create a function that eliminates all duplicate elements from a list.
 ;;	  For example, for the list [a,b,b,a,c,b,c,c,d,a,d] the function should return [a,b,c,d].
 
+(defun removeDuplicates (lst)
+
+)
 
 
 ;; 9. Create a function that packs consecutive duplicate elements of a list into sublists.
 ;;	  For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a] , [b,b] , [a] , [c] , [b] , [c,c] , [d] , [a] , [d]]
 
+(defun pack (lst)
+	(pack-h lst nil)
+)
+
+(defun pack-h (lst acc)
+	(if (null lst)
+		acc
+		(if (equal (car lst) (cadr lst))
+			(pack-h (cdr lst) (cons (car lst) acc))
+
+		)
+	)
+)
+
+(defun go-to-pos (lst x)
+	
+)
 ;; 10. Create a function that packs all duplicate elements of a list into sublists.
 ;;	   For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a,a,a] , [b,b,b] , [c,c,c] , [d,d]].
 
