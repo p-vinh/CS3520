@@ -347,8 +347,37 @@
 ;; 18. Create a function that takes two sorted lists and merges them into a single sorted list.
 ;; 	   For example, for the input [0,2,4] and [1,3,5] the function should return [0,1,2,3,4,5].
 
+;; could just use built in sort function
+(defun mergeL (lst1 lst2)
+	(cond
+		((null lst1) lst2)
+		((null lst2) lst1)
+		((< (car lst1) (car lst2))
+			(cons (car lst1) (mergeL (cdr lst1) lst2)))
+		(t
+			(cons (car lst2) (mergeL lst1 (cdr lst2))))
+	)
+)
+
 ;; 19. Create a function that takes a list of integers and returns a pair with the least and greatest elements in the list.
 ;;	   For example for the list [0,1,2,3,4] the function should return (0,4).
+
+;; Returns a dotted list
+(defun pairs (lst)
+	(if (null lst)
+		nil
+		(pairs-h lst (cons (car lst) (cadr lst)))
+	)
+)
+
+(defun pairs-h (lst pair)
+	(cond 
+		((null lst) pair)
+		((<= (car lst) (car pair)) (pairs-h (cdr lst) (cons (car lst) (cdr pair))))
+		((> (car lst) (cdr pair)) (pairs-h (cdr lst) (cons (car pair) (car lst))))
+		(t (pairs-h (cdr lst) pair))
+	)
+)
 
 ;; 20.Create a function that takes a list and an element and removes all copies of this element from the list.
 ;;	  For example, for the input [a,b,c,a,d,a,e] and a, the function should return [b,c,d,e].
