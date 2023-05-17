@@ -186,6 +186,19 @@
 ;; 10. Create a function that packs all duplicate elements of a list into sublists.
 ;;	   For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a,a,a] , [b,b,b] , [c,c,c] , [d,d]].
 
+(defun packDups (lst)
+	(if (null lst)
+		nil
+		(cons (packDups-h lst nil) (packDups (go-to-pos lst)))
+	)
+)
+
+(defun packDups-h (lst acc)
+
+
+)
+
+
 
 ;; 11. Create a function that computes the length encoding of a list, which is a list of pairs with every elements and times it appears consecutively at a given position.
 ;;	   For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [(1,a) , (2,b) , (1,a) , (1,c) , (1,b) , (2,c) , (1,d) , (1,a) , (1,d)].
@@ -321,16 +334,19 @@
 ;; 20.Create a function that takes a list and an element and removes all copies of this element from the list.
 ;;	  For example, for the input [a,b,c,a,d,a,e] and a, the function should return [b,c,d,e].
 
-(defun removeDups (lst)
+(defun removeDups (lst x)
 	(if (null lst)
 		nil
-		(removeDups-h lst (car lst) nil)
+		(removeDups-h lst x nil)
 	)
 )
 
 (defun removeDups-h (lst elm acc)
-	(if (equal elm (car lst))
-		(removeDups-h (cdr lst) elm acc)
-		(removeDups-h (cdr lst) elm (cons (car lst) acc))
+	(if (null lst)
+		(reverse acc)
+		(if (equal elm (car lst))
+			(removeDups-h (cdr lst) elm acc)
+			(removeDups-h (cdr lst) elm (cons (car lst) acc))
+		)
 	)
 )
