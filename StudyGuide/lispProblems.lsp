@@ -232,8 +232,19 @@
 ;; 14. Create a version of the function in problem (13) that when a > b it doesn't return an empty list, but the sublist that starts at a and ends in b wrapping around the end of the list.
 ;;	   For example, for the list [1,2,3,4,5,6,7] and integers 5 and 3, the function should return [6,7,1,2,3,4].
 
+(defun sublist-wrap (lst a b)
+  (cond ((<= a b) (subseq lst a (incf b)))
+        ((> a b) (append (subseq lst a) (subseq lst 0 (incf b))))))
+
 ;; 15. Create a a function that takes a pair of integers a and b, and returns a list with every integer between a and b.
 ;;	   For example, for the input 2 and 7 the function should return the list [2,3,4,5,6,7]. If a > b the function should return an empty list.
+
+(defun create-range (a b)
+	(if (> a b)
+		nil
+		(cons a (create-range (incf a) b))
+	)
+)
 
 ;; 16. Create a function that takes a list of a number k and a list, and returns a list of lists with all the combinations of k distinct elements from the list.
 ;;	   For example, for integer 2 and the list [a,b,c] the function should return [[a,b] , [a,c] , [b,c]].
