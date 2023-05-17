@@ -1,5 +1,9 @@
 % 1. Create a function that computes x^y.
+power(_, 0, 1).
+power(X, Y, R) :- power_h(X, Y, 1, R).
 
+power_h(_, 0, ACC, ACC).
+power_h(X, Y, ACC, R) :- M is Y - 1, power_h(X, M, ACC, R), R is X * ACC. 
 
 % 2. Create a function that computes x^2 without using multiplication by using the following recursive definition: 0^2 = 0 , n^2 = (n-1)^2 + n + n - 1.
 

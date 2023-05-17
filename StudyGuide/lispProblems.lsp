@@ -132,7 +132,27 @@
 ;;	  For example, for the list [a,b,b,a,c,b,c,c,d,a,d] the function should return [a,b,c,d].
 
 (defun removeDuplicates (lst)
+	(removeDuplicates-h lst nil)
+)
 
+(defun removeDuplicates-h (lst acc)
+	(if (null lst)
+		(reverse acc)
+		(let ((newLst (removeLetter (cdr lst) (car lst) (cons (car lst) nil))))
+			(removeDuplicates-h (cdr newLst) (cons (car newLst) acc))
+		)
+	)
+)
+
+;; Removes a letter from the list
+(defun removeLetter (lst x acc)
+	(if (null lst)
+		(reverse acc)
+		(if (equal x (car lst))
+			(removeLetter (cdr lst) x acc)
+			(removeLetter (cdr lst) x (cons (car lst) acc))
+		)
+	)
 )
 
 
