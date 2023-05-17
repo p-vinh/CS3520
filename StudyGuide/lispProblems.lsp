@@ -160,24 +160,32 @@
 ;;	  For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a] , [b,b] , [a] , [c] , [b] , [c,c] , [d] , [a] , [d]]
 
 (defun pack (lst)
-	(pack-h lst nil)
+	(if (null lst)
+		nil
+		(cons (pack-h lst (car lst) nil) (pack (go-to-pos lst)))
+	)
 )
 
-(defun pack-h (lst acc)
+(defun pack-h (lst x acc)
 	(if (null lst)
 		acc
-		(if (equal (car lst) (cadr lst))
-			(pack-h (cdr lst) (cons (car lst) acc))
-
+		(if (equal x (car lst))
+			(pack-h (cdr lst) x (cons (car lst) acc))
+			acc
 		)
 	)
 )
 
-(defun go-to-pos (lst x)
-	
+(defun go-to-pos (lst)
+	(if (equal (car lst) (cadr lst))
+		(go-to-pos (cdr lst))
+		(cdr lst)
+	)
 )
+
 ;; 10. Create a function that packs all duplicate elements of a list into sublists.
 ;;	   For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a,a,a] , [b,b,b] , [c,c,c] , [d,d]].
+
 
 ;; 11. Create a function that computes the length encoding of a list, which is a list of pairs with every elements and times it appears consecutively at a given position.
 ;;	   For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [(1,a) , (2,b) , (1,a) , (1,c) , (1,b) , (2,c) , (1,d) , (1,a) , (1,d)].
@@ -197,6 +205,95 @@
 
 ;; 16. Create a function that takes a list of a number k and a list, and returns a list of lists with all the combinations of k distinct elements from the list.
 ;;	   For example, for integer 2 and the list [a,b,c] the function should return [[a,b] , [a,c] , [b,c]].
+
+; This is the top function. Takes a list (set) and a number and returns all possible
+; combinations of size k from the given set.
+(defun combination (l k)
+    (cond
+      ((= k 0) (list nil))
+      ((= k (length l)) (list l))
+      (t
+        (let ((combkm1 (combination l (decf k)))) ; Here is the recursive call. Build all combinations of size k-1.
+          (combination-h l combkm1 nil)           ; This helper aids in building the inductive case.
+        )
+      )
+    )
+)
+
+; The inductive case function. Given all combinations of size k-1, to obtain combinations of size k
+; simply every element of the original set onto the possible combinations. The trick here is, since we
+; representing sets with lists, take care to eliminate duplicates (or rather make sure you don't add them).
+; 
+; l : the original set
+; pcomb : all combinations of size k-1
+; acc : the accumulator (this function is tail-recursive).
+(defun combination-h (l pcomb acc)
+  (if (null l)
+    acc
+    (let ((proj-u (proj-union (car l) pcomb nil))
+         )
+      (combination-h (cdr l) pcomb (sp-union proj-u acc))
+    )
+  )
+)
+
+; We can't use the lisp 'union' function here because, for example,
+; for arguments a and (a), it generates (a) (which is correct), but we don't
+; want to add this because this is not a new combination. So this function works
+; just like lisp's 'union' function, except it doesn't add the above spurious combination.
+(defun proj-union (x s acc)
+  (if (null s)
+    acc
+    (proj-union x
+                (cdr s) 
+                (if (not (member x (car s)))
+                  (cons (cons x (car s)) acc)
+                  acc
+                )
+    )
+  )
+)
+
+; This function is a special union function that takes two sets of sets
+; and computes the union. We need this because lisp's 'union' ony works
+; if the sets elements are atoms. So to union sets of sets we need a brand
+; new function (Note: this only works if we are working with sets of sets of atoms,
+; that is, only one nesting level, for sets of sets of sets, we would need another function.
+;
+; The reason this is extra complicated is that we really can't use structural equivalence because
+; even though the lists (1 2) and (2 1) represent the same set, they are structurally different lists
+; so (equal '(1 2) '(2 1)) returns nil. So we have to manually check that both lists contain the same
+; elements.
+(defun sp-union (s1 s2)
+  (cond
+    ((null s1) s2)
+    ((null s2) s1)
+    (t (sp-union (cdr s1) (if (not (sp-member (car s1) s2))
+                            (cons (car s1) s2)
+                            s2
+                          )
+       )
+    )
+  )
+)
+
+; Checks whether set x is a member of set of sets s.
+(defun sp-member (x s)
+  (if (null s)
+    nil
+    (if (set-eq x (car s))
+      t
+      (sp-member x (cdr s))
+    )
+  )
+)
+
+; This is how we define set equality. The subsetp function checks that
+; the second list contains all elements from the first list.
+(defun set-eq (s1 s2)
+  (and (subsetp s1 s2) (subsetp s2 s1))
+)
+
 
 ;; 17. Create a function that takes a list and returns a pair with two lists: one with elements that are less than or equal to the first element,
 ;;	   and the other with the elements that are greater than the first element.
