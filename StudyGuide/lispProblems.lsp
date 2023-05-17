@@ -189,13 +189,18 @@
 (defun packDups (lst)
 	(if (null lst)
 		nil
-		(cons (packDups-h lst nil) (packDups (go-to-pos lst)))
+		(cons (packDups-h lst (car lst) nil) (packDups (removeDups lst (car lst))))
 	)
 )
 
-(defun packDups-h (lst acc)
-
-
+(defun packDups-h (lst elm acc)
+	(if (null lst)
+		acc
+		(if (equal elm (car lst))
+			(packDups-h (cdr lst) elm (cons (car lst) acc))
+			(packDups-h (cdr lst) elm acc)
+		)
+	)
 )
 
 
@@ -205,6 +210,20 @@
 
 ;; 12. Create a function that decodes length encoding.
 ;;	   For example, the code list [(1,a) , (2,b) , (1,a) , (1,c) , (1,b) , (2,c) , (1,d) , (1,a) , (1,d)] should return [a,b,b,a,c,b,c,c,d,a,d].
+
+(defun decode (lst)
+	(if (null lst)
+		nil
+		(append (decode-h (cadar lst) (caar lst)) (decode (cdr lst)))
+	)
+)
+
+(defun decode-h (elm cnt)
+	(if (= cnt 0)
+		nil
+		(cons elm (decode-h elm (decf cnt)))
+	)
+)
 
 ;; 13. Create a function that takes a list and two integers a and b and returns the sublist that starts on a and ends on b. 
 ;;	   For example, for the list [1,2,3,4,5,6,7] and integers 3 and 5, the function should return [4,5,6]. If a > b then the function should return the empty list.
