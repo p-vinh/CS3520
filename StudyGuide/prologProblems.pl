@@ -90,6 +90,13 @@ decode_h(Elm, Cnt, [Elm|R]) :- M is Cnt - 1, decode_h(Elm, M, R).
 
 % 13. Create a function that takes a list and two integers a and b and returns the sublist that starts on a and ends on b.
 %       For example, for the list [1,2,3,4,5,6,7] and integers 3 and 5, the function should return [4,5,6]. If a > b then the function should return the empty list.
+sublist(_, A, B, []) :- A > B.
+sublist([], _, _, []).
+
+sublist([_|T], A, B, R) :- A >= 0, A1 is A - 1, B1 is B - 1, sublist(T, A1, B1, R).
+sublist([H|T], 0, B, [H|R]) :- B >= 0, B1 is B - 1, sublist(T, 0, B1, R).
+
+
 
 
 % 14. Create a version of the function in problem (13) that when a > b it doesn't return an empty list, 
@@ -138,9 +145,19 @@ sp_m(X,[H|T]) :- subset(X,H), subset(H,X);
 % 18. Create a function that takes two sorted lists and merges them into a single sorted list. 
 %       For example, for the input [0,2,4] and [1,3,5] the function should return [0,1,2,3,4,5].
 
+mergeL([], [], []).
+mergeL([], L2, L2).
+mergeL(L1, [], L1).
+
+mergeL([H1|T1], [H2|T2], [H1|R]) :- H1 < H2, mergeL(T1, [H2|T2], R).
+mergeL([H1|T1], [H2|T2], [H2|R]) :- H1 >= H2, mergeL([H1|T1], T2, R).
 
 % 19. Create a function that takes a list of integers and returns a pair with the least and greatest elements in the list. 
 %       For example for the list [0,1,2,3,4] the function should return (0,4).
+
+min_max_pair([],[]).
+min_max_pair(L, (Min, Max)) :- min_list(L, Min), max_list(L, Max).
+
 
 
 % 20 .Create a function that takes a list and an element and removes all copies of this element from the list. 
