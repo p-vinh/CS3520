@@ -57,8 +57,8 @@ pack([], []).
 pack([H|T], [R1|R]) :- pack_h([H|T], H, [], R1), go_to_pos([H|T], T1), pack(T1, R).
 
 pack_h([], _, Acc, Acc).
-pack_h([H|T], X, Acc, R) :- X = H -> pack_h(T, X, [H|Acc], R);
-                                     R = Acc.
+pack_h([X|T], X, Acc, R) :- pack_h(T, X, [X|Acc], R).
+pack_h(_, _, Acc, Acc).
 
 go_to_pos([X, X | Rest], Result) :-
     go_to_pos([X | Rest], Result).
@@ -67,6 +67,12 @@ go_to_pos([_ | Rest], Result) :- Result = Rest.
 % 10. Create a function that packs all duplicate elements of a list into sublists.
 %       For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a,a,a] , [b,b,b] , [c,c,c] , [d,d]].
 
+packDups([], []).
+packDups([H|T], R) :- packDups_h([H|T], H, R1), removeDups([H|T], H, L), packDups(L, R2), R = [R1|R2].
+
+packDups_h([], _, []).
+packDups_h([H|T], X, R) :- H = X -> packDups_h(T, X, R1), R = [H|R1];
+                                    packDups_h(T, X, R).  
 
 % 11. Create a function that computes the length encoding of a list, which is a list of pairs with every elements and times it appears consecutively at a given position.
 %       For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [(1,a) , (2,b) , (1,a) , (1,c) , (1,b) , (2,c) , (1,d) , (1,a) , (1,d)].
@@ -74,6 +80,12 @@ go_to_pos([_ | Rest], Result) :- Result = Rest.
 
 % 12. Create a function that decodes length encoding. For example, the code list [(1,a) , (2,b) , (1,a) , (1,c) , (1,b) , (2,c) , (1,d) , (1,a) , (1,d)]
 %       should return [a,b,b,a,c,b,c,c,d,a,d].
+
+decode([], []).
+decode([(N, E)| T], R) :- decode_h(E, N, R1), decode(T, R2), append(R1, R2, R).
+
+decode_h(_, 0, []).
+decode_h(Elm, Cnt, [Elm|R]) :- M is Cnt - 1, decode_h(Elm, M, R).
 
 
 % 13. Create a function that takes a list and two integers a and b and returns the sublist that starts on a and ends on b.
@@ -133,3 +145,7 @@ sp_m(X,[H|T]) :- subset(X,H), subset(H,X);
 
 % 20 .Create a function that takes a list and an element and removes all copies of this element from the list. 
 %       For example, for the input [a,b,c,a,d,a,e] and a, the function should return [b,c,d,e].
+
+removeDups([], _, []).
+removeDups([H|T], H, R) :- removeDups(T, H, R).
+removeDups([H|T], X, [H|R]) :- removeDups(T, X, R).
