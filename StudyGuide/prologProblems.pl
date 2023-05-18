@@ -31,9 +31,19 @@ sumOfPairs([(X, Y) | T], [S|R]) :- S is X + Y, sumOfPairs(T, R).
 % 6. Create a function that takes a list of pairs of integers and returns a pair with the sum of the elements in the first position and
 %       the sum of the elements in the second position. For example, for the list [(1,2) , (3,4) , (5,6)] the function should return (9,12).
 
+
+
 % 7. Polynomials may be represented as lists of integer, where each integer is the coefficient of the corresponding monomial.
 %       For example, x^3 + 3x - 7 can be represented as [1,0,3,7]. Create a function that takes a polynomial as a list and evaluates the polynomial at a given point x_0.
 %       Hint: use the function from problem (1).
+
+polynomial([], 0).
+polynomial(L, X, R) :- polynomial_h(L, X, 0, 0, R).
+
+polynomial_h([], _, _, Sum, Sum) :- !.
+polynomial_h([H|T], X, Sign, Sum, R) :- H =:= 0 -> polynomial_h(T, X, 0, Sum, R);
+        length([H|T], M), N is M - 1, power(X, N, V),
+        (Sign mod 2 =:= 0 -> S is H * V + Sum; S is Sum - H * V), polynomial_h(T, X, 1, S, R).
 
 
 % 8. Create a function that eliminates all duplicate elements from a list. 
@@ -43,6 +53,16 @@ sumOfPairs([(X, Y) | T], [S|R]) :- S is X + Y, sumOfPairs(T, R).
 % 9. Create a function that packs consecutive duplicate elements of a list into sublists.
 %       For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a] , [b,b] , [a] , [c] , [b] , [c,c] , [d] , [a] , [d]]
 
+pack([], []).
+pack([H|T], [R1|R]) :- pack_h([H|T], H, [], R1), go_to_pos([H|T], T1), pack(T1, R).
+
+pack_h([], _, Acc, Acc).
+pack_h([H|T], X, Acc, R) :- X = H -> pack_h(T, X, [H|Acc], R);
+                                     R = Acc.
+
+go_to_pos([X, X | Rest], Result) :-
+    go_to_pos([X | Rest], Result).
+go_to_pos([_ | Rest], Result) :- Result = Rest.
 
 % 10. Create a function that packs all duplicate elements of a list into sublists.
 %       For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [[a,a,a] , [b,b,b] , [c,c,c] , [d,d]].
