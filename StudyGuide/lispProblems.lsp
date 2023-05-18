@@ -208,6 +208,24 @@
 ;; 11. Create a function that computes the length encoding of a list, which is a list of pairs with every elements and times it appears consecutively at a given position.
 ;;	   For example, for the list [a,b,b,a,c,b,c,c,d,a,d], the function should return [(1,a) , (2,b) , (1,a) , (1,c) , (1,b) , (2,c) , (1,d) , (1,a) , (1,d)].
 
+; if first element of the cdr is the same as current element add 1 to accumulator
+; if different add accumulator and current element to list
+
+(defun lengthencoder (lst)
+    (lengthencoder-h lst 1 '())
+)
+
+(defun lengthencoder-h (lst cnt acc)
+    (if (null lst)
+        (reverse acc)
+        (if (eql (car lst) (car (cdr lst)))
+            (lengthencoder-h (cdr lst) (+ 1 cnt) acc)
+            (lengthencoder-h (cdr lst) 1 (cons (list cnt (car lst)) acc))
+        )
+    )
+)
+
+
 ;; 12. Create a function that decodes length encoding.
 ;;	   For example, the code list [(1,a) , (2,b) , (1,a) , (1,c) , (1,b) , (2,c) , (1,d) , (1,a) , (1,d)] should return [a,b,b,a,c,b,c,c,d,a,d].
 
@@ -228,6 +246,25 @@
 ;; 13. Create a function that takes a list and two integers a and b and returns the sublist that starts on a and ends on b. 
 ;;	   For example, for the list [1,2,3,4,5,6,7] and integers 3 and 5, the function should return [4,5,6]. If a > b then the function should return the empty list.
 
+; if cnt is a then begin adding to list
+; if cnt > b stop adding
+
+(defun sublst (lst a b)
+    (sublst-h lst a b 0 '())
+)
+
+(defun sublst-h (lst a b cnt acc)
+(if (> a b)
+    nil
+     (if (> cnt b)
+        (reverse acc)
+        (if (>= cnt a)
+            (sublst-h (cdr lst) a b (+ 1 cnt) (cons (car lst) acc))
+            (sublst-h (cdr lst) a b (+ 1 cnt) acc)
+        )
+    )
+)  
+)
 
 ;; 14. Create a version of the function in problem (13) that when a > b it doesn't return an empty list, but the sublist that starts at a and ends in b wrapping around the end of the list.
 ;;	   For example, for the list [1,2,3,4,5,6,7] and integers 5 and 3, the function should return [6,7,1,2,3,4].
