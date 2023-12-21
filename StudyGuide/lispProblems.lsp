@@ -106,26 +106,22 @@
 ;;	  For example, x^3 + 3x - 7 can be represented as [1,0,3,7]. Create a function that takes a polynomial as a list and evaluates the polynomial at a given point x_0.
 ;;	  Hint: use the function from problem (1).
 
-(defun polynomial (lst x)
-	(if (null lst)
-		0
-		(polynomial-h lst x 0 0)
-	)
+(defun evalPoly (poly val)
+  (cond
+    ((null poly) 0)
+    ((null (cdr poly)) (car poly))
+    (t (+ (evalMono (car poly)
+                    (- (length poly) 1)
+                    val
+          )
+          (evalPoly (cdr poly) val)
+       )
+    )
+  )
 )
 
-(defun polynomial-h (lst x sign sum)
-	(if (null lst)
-		sum
-		(if (= (car lst) 0)
-			(polynomial-h (cdr lst) x 0 sum)
-			(let ((var (pow x (- (length lst) 1))))
-				(if (= (mod sign 2) 0)
-					(polynomial-h (cdr lst) x 1 (+ (* (car lst) var) sum))
-					(polynomial-h (cdr lst) x 1 (- sum (* (car lst) var)))
-				)
-			)
-		)
-	)
+(defun evalMono (coeff expo val)
+  (* coeff (expt val expo))
 )
 
 ;; 8. Create a function that eliminates all duplicate elements from a list.
@@ -211,18 +207,22 @@
 ; if first element of the cdr is the same as current element add 1 to accumulator
 ; if different add accumulator and current element to list
 
-(defun lengthencoder (lst)
-    (lengthencoder-h lst 1 '())
+(defun encodingL (lst)
+	(if (null lst)
+		nil
+		(cons (encoding-h lst (car lst) nil) (encodingL (go-to-pos lst)))
+	)
 )
 
-(defun lengthencoder-h (lst cnt acc)
-    (if (null lst)
-        (reverse acc)
-        (if (eql (car lst) (car (cdr lst)))
-            (lengthencoder-h (cdr lst) (+ 1 cnt) acc)
-            (lengthencoder-h (cdr lst) 1 (cons (list cnt (car lst)) acc))
-        )
-    )
+(defun encoding-h (lst x acc)
+	(if (null lst)
+		(cons (length acc) (cons (car acc) nil))
+		(if (equal (car lst) x)
+			(encoding-h (cdr lst) x (cons (car lst) acc))
+			(cons (length acc) (cons (car acc) nil))
+		)
+	)
+
 )
 
 
@@ -246,24 +246,26 @@
 ;; 13. Create a function that takes a list and two integers a and b and returns the sublist that starts on a and ends on b. 
 ;;	   For example, for the list [1,2,3,4,5,6,7] and integers 3 and 5, the function should return [4,5,6]. If a > b then the function should return the empty list.
 
-; if cnt is a then begin adding to list
-; if cnt > b stop adding
 
-(defun sublst (lst a b)
-    (sublst-h lst a b 0 '())
+(defun sublistRange (lst a b)
+	(if (> a b)
+		nil
+		(append (subseq lst a (incf b)))
+    	;; (sublistRange-h lst a b nil)
+	)
 )
 
-(defun sublst-h (lst a b cnt acc)
-(if (> a b)
-    nil
-     (if (> cnt b)
-        (reverse acc)
-        (if (>= cnt a)
-            (sublst-h (cdr lst) a b (+ 1 cnt) (cons (car lst) acc))
-            (sublst-h (cdr lst) a b (+ 1 cnt) acc)
-        )
-    )
-)  
+(defun sublistRange-h (lst a b acc)
+	(if (null lst)
+		(reverse acc)
+		(if (> a 0)
+			(sublistRange-h (cdr lst) (- a 1) (- b 1) acc)
+			(if (>= b 0)
+				(sublistRange-h (cdr lst) 0 (- b 1) (cons (car lst) acc))
+				(reverse acc)
+			)
+		)
+	)
 )
 
 ;; 14. Create a version of the function in problem (13) that when a > b it doesn't return an empty list, but the sublist that starts at a and ends in b wrapping around the end of the list.
